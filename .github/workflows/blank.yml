@@ -1,10 +1,15 @@
 name: Scheduled Slack Message
-
 on:
   schedule:
-    - cron: '0 15 * * *'  # UTC 時區，1點 = 台灣9點
-  workflow_dispatch:      # 可以手動觸發
-
+    # 台灣時間 10:00（UTC 02:00）
+    - cron: '0 2 * * 1-5'
+    # 台灣時間 12:00（UTC 04:00）
+    - cron: '0 4 * * 1-5'
+    # 台灣時間 14:05（UTC 06:05）
+    - cron: '5 6 * * 1-5'
+    # 台灣時間 18:45（UTC 10:45）
+    - cron: '45 10 * * 1-5'
+  workflow_dispatch:  # 可手動觸發
 jobs:
   notify:
     runs-on: ubuntu-latest
@@ -13,6 +18,19 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
+          HOUR=$(date -u +"%H")
+          MIN=$(date -u +"%M")
+          if [ "$HOUR" = "02" ] && [ "$MIN" = "00" ]; then
+            MESSAGE=":coffee: 咖咖，熊貓們趕緊上工 :panda_face::panda_face:"
+          elif [ "$HOUR" = "04" ] && [ "$MIN" = "00" ]; then
+            MESSAGE=":bento: 放飯啦，熊貓跟猴子要一起去吃飯了！！"
+          elif [ "$HOUR" = "06" ] && [ "$MIN" = "05" ]; then
+            MESSAGE=":pill: 請各位熊貓們拿起保健食品，咖噴咖 :panda_face:"
+          elif [ "$HOUR" = "10" ] && [ "$MIN" = "45" ]; then
+            MESSAGE=":feet: 熊貓餓了，要回家吃飯了 喵喵～～"
+          else
+            MESSAGE=":question: 未知時間觸發的訊息"
+          fi
           curl -X POST -H 'Content-type: application/json' \
-            --data '{"text":"早安！這是自動化訊息。"}' \
+            --data "{\"text\":\"$MESSAGE\"}" \
             $SLACK_WEBHOOK_URL
