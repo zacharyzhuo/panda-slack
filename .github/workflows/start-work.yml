@@ -3,7 +3,6 @@ name: Start Work
 on:
   schedule:
     - cron: '0 2 * * 1-5'  # 台灣時間 10:00
-  workflow_dispatch:
 
 jobs:
   notify:
@@ -14,5 +13,5 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
           curl -X POST -H 'Content-type: application/json' \
-            --data '{"text":":coffee: 咖咖，熊貓們趕緊上工 :panda_face::panda_face:"}' \
+            --data '{"text":"<!here> \n:coffee: 咖咖，熊貓們趕緊上工 :panda_face::panda_face:"}' \
             $SLACK_WEBHOOK_URL
