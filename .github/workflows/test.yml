@@ -14,5 +14,5 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
           curl -X POST -H 'Content-type: application/json' \
-            --data '{"text":"<@here>\n咖咖，熊貓測試熊貓測試 :panda_face::panda_face:"}' \
+            --data '{"text":"@here \n咖咖，熊貓測試熊貓測試 :panda_face::panda_face:"}' \
             $SLACK_WEBHOOK_URL
