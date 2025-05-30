@@ -3,7 +3,6 @@ name: Take Dietary Supplements
 on:
   schedule:
     - cron: '5 6 * * 1-5'  # 台灣時間 14:05
-  workflow_dispatch:
 
 jobs:
   notify:
@@ -14,5 +13,5 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
           curl -X POST -H 'Content-type: application/json' \
-            --data '{"text":":pill: 請各位熊貓們拿起保健食品，咖噴咖 :panda_face:"}' \
+            --data '{"text":"<!here> \n:pill: 請各位熊貓們拿起保健食品，咖噴咖 :panda_face:"}' \
             $SLACK_WEBHOOK_URL
